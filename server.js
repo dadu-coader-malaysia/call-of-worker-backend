@@ -13,7 +13,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/api', routes);
 app.use(
   cors({
-    origin: "http://localhost:5173/api"
+    origin: "http://localhost:5173/api",
+    credentials: true,
   })
 );
 

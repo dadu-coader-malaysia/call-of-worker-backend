@@ -1,0 +1,25 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "this is my own project dial for help in malaysia",
+  "license": "ISC",
+  "author": "dadu_coader_Malaysia",
+  "type": "commonjs",
+  "main": "server",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server",
+    "dev": "nodemon server"
+  },
+  "dependencies": {
+    "axios": "^1.16.0",
+    "bcryptjs": "^3.0.3",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "mongoose": "^9.6.2",
+    "multer": "^2.1.1",
+    "nodemon": "^3.1.14",
+    "zod": "^4.4.3"
+  }
+}

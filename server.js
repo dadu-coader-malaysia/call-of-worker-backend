@@ -1,16 +1,16 @@
 const express = require('express'); require('dotenv').config();
 const cors = require("cors");
 const connectDb = require('./database/database')
-const routes = require('./routes/route')
+const router = require('./auth-router/router')
 
 
 
 const app = express();
+app.use('/api', router);
 
 connectDb();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use('/api', routes);
 app.use(
   cors({
     origin: "http://localhost:5173/api",

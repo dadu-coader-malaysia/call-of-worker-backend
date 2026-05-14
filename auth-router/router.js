@@ -1,5 +1,6 @@
 const express = require('express');
 const controller = require('../controllers/controllers');
+const upload = require('../security/upload');
 
 
 const router = express.Router();
@@ -16,7 +17,7 @@ router.route('/subscription')
 .get(controller.subscription);
 
 
-router.route('/home')
+router.route('/')
 .get(controller.home)
 .post(controller.home)
 .put(controller.home)
@@ -43,6 +44,9 @@ router.route('/workers')
 .put(controller.workers)
 .delete(controller.workers);
 
+//For specific worker
+router.get("/workers/type/:serviceType", controller.workerType);
+
 
 router.route('/services')
 .get(controller.services)
@@ -63,6 +67,13 @@ router.route('/about')
 .put(controller.about)
 .delete(controller.about)
 .post(controller.about);
+
+
+router.route('/newpost')
+.post( upload.single("img"),controller.newPost)
+.put(controller.newPost)
+.delete(controller.newPost)
+.get(controller.newPost);
 
 
 router.route('/dev').get(controller.dev);

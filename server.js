@@ -5,20 +5,22 @@ const router = require('./auth-router/router')
 
 
 
-const app = express();
-app.use('/api', router);
 
+const app = express();
 connectDb();
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use("/uploads", express.static("uploads"));
+
 app.use(
   cors({
-    origin: "http://localhost:5173/api",
+    origin: "http://localhost:5173",
+    methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
 );
-
-
+app.use(router);
 
 const PORT = process.env.PORT || 5000
 app.listen(PORT , ()=>{

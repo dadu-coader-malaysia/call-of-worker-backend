@@ -1,6 +1,7 @@
+const workerModel = require('../models/home');
+const postModel = require('../models/newPost');
 
-
-const home = (req, res) =>{
+const home = async (req, res) =>{
     try {
        res.status(200).json({message:'Home is responsed!!'}) 
     } catch (error) {
@@ -9,32 +10,52 @@ const home = (req, res) =>{
     
 }
 
-const post = (req, res) => {
+const post = async (req, res) => {
     try {
-        res.status(200).json({message:'Postpage is responsed!!'})
+        const posts = await postModel.find();
+         res.status(200).json(posts)
+        
     } catch (error) {
         res.status(500).json({message:'Internal server error!!'})
     }
 }
 
-const workers = (req, res) =>{
+const workers = async (req, res) =>{
     try {
         res.status(200).json({message:'Workerpage is responsed!!'})
     } catch (error) {
        res.status(500).json({message:'Internal server error'}) 
     }
 }
-
-const newPost = (req, res) =>{
+const newPost = async (req, res) => {
     try {
-        res.status(200).json({message:'Success!!'})
+
+        const { name, number,details, type } = req.body;
+
+        const newPost = await postModel.create({
+            name,
+            number,
+            details,
+            type,
+            img: req.file.filename
+        });
+
+        res.status(201).json({
+            message: 'Post created Successfully!!',
+            newPost
+        });
+
     } catch (error) {
-        res.status(500).json({message:'Internal server error!!'})
+
+        res.status(500).json({
+            message: 'Internal server error!!'
+        });
+
     }
 }
 
 
-const profile = (req, res) =>{
+const profile = async (req, res) =>{
     try {
         res.status(200).json({message:'Profile'})
     } catch (error) {
@@ -42,7 +63,7 @@ const profile = (req, res) =>{
     }
 }
 
-const updateProfile = (req, res) =>{
+const updateProfile = async (req, res) =>{
     try {
         res.status(200).json({message:'Profile Updated!!'}) 
     } catch (error) {
@@ -50,7 +71,7 @@ const updateProfile = (req, res) =>{
     }
 }
 
-const deleteProfile = (req, res) =>{
+const deleteProfile = async (req, res) =>{
     try {
         res.status(200).json({message:'Profile Deleted!!'}) 
     } catch (error) {
@@ -59,7 +80,7 @@ const deleteProfile = (req, res) =>{
 }
 
 
-const deletePost = (req, res) =>{
+const deletePost = async (req, res) =>{
     try {
         res.status(200).json({message:'Post Deleted!!'})
     } catch (error) {
@@ -67,7 +88,7 @@ const deletePost = (req, res) =>{
     }
 }
 
-const deleteWorker = (req, res) =>{
+const deleteWorker = async (req, res) =>{
     try {
         res.status(200).json({message:'Worker Deleted!!'})
     } catch (error) {
@@ -75,7 +96,7 @@ const deleteWorker = (req, res) =>{
     }
 }
 
-const login = (req, res) =>{
+const login = async (req, res) =>{
     try {
         res.status(200).json({message:'Login Success!!'})
     } catch (error) {
@@ -83,7 +104,7 @@ const login = (req, res) =>{
     }
 }
 
-const logout = (req, res) =>{
+const logout = async (req, res) =>{
     try {
         res.status(200).json({message:'Logout Success!!'})
     } catch (error) {
@@ -92,7 +113,7 @@ const logout = (req, res) =>{
 }
 
 
-const register = (req, res) =>{
+const register = async (req, res) =>{
     try {
         res.status(200).json({message:'Register Success!!'})
 
@@ -101,7 +122,7 @@ const register = (req, res) =>{
     }   
 }
 
-const services = (req, res) =>{
+const services = async (req, res) =>{
     try {
         res.status(200).json({message:'Services is responsed!!'})
     } catch (error) {
@@ -109,7 +130,7 @@ const services = (req, res) =>{
     }
 }
 
-const contact = (req, res) =>{
+const contact = async (req, res) =>{
     try {
         res.status(200).json({message:'Contact is responsed!!'})
     } catch (error) {
@@ -117,7 +138,7 @@ const contact = (req, res) =>{
     }
 }
 
-const about = (req, res) =>{
+const about = async (req, res) =>{
     try {
         res.status(200).json({message:'About is responsed!!'})
     } catch (error) {
@@ -125,7 +146,7 @@ const about = (req, res) =>{
     }
 }
 
-const subscription = (req, res) =>{
+const subscription = async (req, res) =>{
     try {
         res.status(200).json({message:'Subscription is responsed!!'})   
     } catch (error) {
@@ -133,8 +154,26 @@ const subscription = (req, res) =>{
     }
 }
 
+//Worker of specific type
+const workerType = async (req, res) =>{
+    try {
+        const specificWorker = await workerModel.find({profession:req.params.profession})
+         .then(worker=>{
+             if(worker.length>0){   
+                res.status(200).json(specificWorker)
+             } else{
+                res.status(404).json({message:'No worker found of this type!!'})
+             }  
+            })
+    } catch (error) {
+        res.status(500).json({message:'Internal server error!!'})
+    }
+}
 
-const dev = (req, res) =>{
+
+
+
+const dev = async (req, res) =>{
     try {
         res.status(200).json({message:'Dev is responsed!!'})
     } catch (error) {
@@ -159,7 +198,8 @@ const controllers = {
     contact,
     about,
     subscription,
-    dev
+    dev,
+    workerType
 }   
 
 

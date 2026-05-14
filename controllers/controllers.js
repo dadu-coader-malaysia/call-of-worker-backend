@@ -125,6 +125,14 @@ const about = (req, res) =>{
     }
 }
 
+const subscription = (req, res) =>{
+    try {
+        res.status(200).json({message:'Subscription is responsed!!'})   
+    } catch (error) {
+        res.status(500).json({message:'Internal server error!!'})
+    }
+}
+
 
 const dev = (req, res) =>{
     try {
@@ -150,6 +158,7 @@ const controllers = {
     services,
     contact,
     about,
+    subscription,
     dev
 }   
 
